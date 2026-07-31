@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build outputs
+dist/
+*.tsbuildinfo
+*.js.map
+
+# Environment and Secrets (CRITICAL for OAuth tokens)
+.env
+.env.*
+!.env.example
+*.pem
+client_secret*.json
+credentials*.json
+
+# Python Virtual Environments
+.venv/
+venv/
+ENV/
+
+# System & OS files
+.DS_Store
+Thumbs.db
+
+# IDE & Editor files
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
