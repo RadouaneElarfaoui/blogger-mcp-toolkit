@@ -14,10 +14,9 @@ Interact seamlessly with Blogger blogs, posts, pages, comments, media, and user 
 ## 📑 Table of Contents
 
 - [Features](#-features)
-- [Quick Installation via `add-mcp`](#-quick-installation-via-add-mcp)
-- [Prerequisites](#-prerequisites)
+- [Quick Start & Installation via `add-mcp`](#-quick-start--installation-via-add-mcp)
 - [Google Cloud Console Setup](#-google-cloud-console-setup)
-- [Manual Installation & Setup](#-manual-installation--setup)
+- [Manual Setup](#-manual-setup)
 - [Environment Variables](#-environment-variables)
 - [Available Tools (29)](#-available-tools-29)
 - [MCP Client Configuration](#-mcp-client-configuration)
@@ -28,15 +27,32 @@ Interact seamlessly with Blogger blogs, posts, pages, comments, media, and user 
 ## 🌟 Features
 
 - **100% Blogger API v3 Coverage + Media & Search Extensions**: 29 MCP tools for full management of blogs, posts, pages, comments, media, and users.
-- **Permanent Base64 Image Embedding (`blogger_media_to_base64`)**: Convert local images (`.png`, `.jpg`, `.webp`, `.gif`, `.svg`) into Base64 Data URIs with zero external CDN dependencies, ensuring your images never expire or disappear.
+- **Remote-Friendly Interactive OAuth (`npx blogger-mcp-auth`)**: Standalone authentication CLI supporting local browser redirect AND manual code copy-pasting for remote/SSH/Docker environments.
+- **Dual Variable Support**: Compatible with both `BLOGGER_*` and `GOOGLE_*` environment variables.
+- **Permanent Base64 Image Embedding (`blogger_media_to_base64`)**: Convert local images (`.png`, `.jpg`, `.webp`, `.gif`, `.svg`) into Base64 Data URIs with zero external CDN dependencies, ensuring your images never expire.
 - **Lightweight Listing Mode (`summaryOnly`)**: Omit heavy HTML post content on `list` and `search` endpoints to drastically reduce JSON response sizes from >50KB down to ~2KB and eliminate payload truncation.
 - **Dedicated Label Search (`blogger_posts_searchByLabel`)**: Quick filtering of posts by tag/label.
 - **Automatic HTML Markdown Cleaner**: Cleans raw Markdown code fences (e.g., ```` ```html ````) before publishing posts or pages to Blogger.
-- **Robust Authentication**: Fully integrated OAuth2 workflow with automatic token refresh.
 
 ---
 
-## ⚡ Quick Installation via `add-mcp`
+## 🚀 Quick Start & Installation via `add-mcp`
+
+### Step 1: Acquire your Blogger Refresh Token (Remote or Local)
+
+Run the interactive authentication tool in your terminal:
+
+```bash
+npx blogger-mcp-auth
+```
+
+* **Interactive Prompt**: Enter your `BLOGGER_CLIENT_ID` and `BLOGGER_CLIENT_SECRET` when prompted.
+* **Browser Authentication**: Authorize the app in your browser. *(If working over SSH/remote container, simply copy-paste the redirected URL or authorization code back into the terminal!)*
+* **Token Output**: Copy the generated `BLOGGER_REFRESH_TOKEN` displayed in green.
+
+---
+
+### Step 2: Install across your AI assistants with `add-mcp`
 
 Install and configure automatically across all your AI assistants (**Claude Code**, **Cursor**, **Zed**, **Windsurf**, **VS Code**, etc.) in **one single command**:
 
@@ -49,14 +65,6 @@ npx add-mcp github:RadouaneElarfaoui/blogger-mcp-toolkit \
 
 ---
 
-## 📋 Prerequisites
-
-- **Node.js**: v18.0.0 or higher
-- **Google Account**: With one or more blogs on [Blogger](https://www.blogger.com/)
-- **Google Cloud Credentials**: Client ID, Client Secret, and Refresh Token
-
----
-
 ## ⚙️ Google Cloud Console Setup
 
 To communicate with the Blogger API, you need OAuth2 credentials:
@@ -66,16 +74,16 @@ To communicate with the Blogger API, you need OAuth2 credentials:
 3. **Configure OAuth Consent Screen**:
    - Go to **APIs & Services > OAuth consent screen**.
    - Choose **External**, fill in required support email fields.
-   - Under **Test users**, add your own Google email address.
+   - Under **Test users**, add your own Google email address **(Crucial if your app is in "Testing" status!)**.
 4. **Create Credentials**:
    - Go to **APIs & Services > Credentials** > **+ CREATE CREDENTIALS > OAuth client ID**.
-   - Select **Web application**.
-   - Add Authorized redirect URI: `http://localhost:3000/oauth2callback`
+   - Select **Web application** (or **Desktop app**).
+   - Add Authorized redirect URI: `http://localhost:3000/oauth2callback` (or port 3001/3002).
    - Copy your **Client ID** and **Client Secret**.
 
 ---
 
-## 📦 Manual Installation & Setup
+## 📦 Manual Setup
 
 ```bash
 # Clone the repository
@@ -86,9 +94,8 @@ cd blogger-mcp-toolkit
 npm install
 npm run build
 
-# Generate Refresh Token
+# Generate Refresh Token locally
 cp .env.example .env
-# Edit .env with your CLIENT_ID & CLIENT_SECRET, then run:
 npm run auth
 ```
 
@@ -96,11 +103,14 @@ npm run auth
 
 ## 🌍 Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|:--------:|
-| `BLOGGER_CLIENT_ID` / `GOOGLE_CLIENT_ID` | OAuth2 Client ID from Google Cloud Console | Yes |
-| `BLOGGER_CLIENT_SECRET` / `GOOGLE_CLIENT_SECRET` | OAuth2 Client Secret from Google Cloud Console | Yes |
-| `BLOGGER_REFRESH_TOKEN` / `GOOGLE_REFRESH_TOKEN` | OAuth2 Refresh Token | Yes |
+Both `BLOGGER_*` and `GOOGLE_*` prefixes are supported:
+
+| Variable | Fallback Alias | Description | Required |
+|----------|----------------|-------------|:--------:|
+| `BLOGGER_CLIENT_ID` | `GOOGLE_CLIENT_ID` | OAuth2 Client ID from Google Cloud Console | Yes |
+| `BLOGGER_CLIENT_SECRET` | `GOOGLE_CLIENT_SECRET` | OAuth2 Client Secret from Google Cloud Console | Yes |
+| `BLOGGER_REFRESH_TOKEN` | `GOOGLE_REFRESH_TOKEN` | OAuth2 Refresh Token | Yes |
+| `BLOGGER_API_KEY` | `GOOGLE_API_KEY` | Optional API key for read-only access | No |
 
 ---
 

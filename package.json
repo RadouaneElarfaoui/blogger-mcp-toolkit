@@ -5,7 +5,8 @@
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "blogger-mcp-toolkit": "dist/index.js"
+    "blogger-mcp-toolkit": "dist/index.js",
+    "blogger-mcp-auth": "dist/cli/auth.js"
   },
   "files": [
     "dist"
