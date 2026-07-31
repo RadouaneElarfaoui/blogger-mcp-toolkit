@@ -18,14 +18,14 @@ const question = (query: string): Promise<string> => {
 async function main() {
   console.log('\n🚀 Starting Google OAuth2 Refresh Token Generator...\n');
 
-  let clientId = process.env.GOOGLE_CLIENT_ID?.trim();
-  let clientSecret = process.env.GOOGLE_CLIENT_SECRET?.trim();
+  let clientId = (process.env.BLOGGER_CLIENT_ID || process.env.GOOGLE_CLIENT_ID)?.trim();
+  let clientSecret = (process.env.BLOGGER_CLIENT_SECRET || process.env.GOOGLE_CLIENT_SECRET)?.trim();
 
   if (!clientId) {
-    clientId = await question('📝 Enter your GOOGLE_CLIENT_ID: ');
+    clientId = await question('📝 Enter your BLOGGER_CLIENT_ID: ');
     clientId = clientId.trim();
   } else {
-    console.log('✅ Found GOOGLE_CLIENT_ID in .env');
+    console.log('✅ Found BLOGGER_CLIENT_ID in environment variables');
   }
 
   if (clientId && !clientId.endsWith('.apps.googleusercontent.com')) {
@@ -33,10 +33,10 @@ async function main() {
   }
 
   if (!clientSecret) {
-    clientSecret = await question('📝 Enter your GOOGLE_CLIENT_SECRET: ');
+    clientSecret = await question('📝 Enter your BLOGGER_CLIENT_SECRET: ');
     clientSecret = clientSecret.trim();
   } else {
-    console.log('✅ Found GOOGLE_CLIENT_SECRET in .env');
+    console.log('✅ Found BLOGGER_CLIENT_SECRET in environment variables');
   }
 
   if (!clientId || !clientSecret) {
