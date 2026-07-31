@@ -2,6 +2,7 @@
 
 > A universal MCP (Model Context Protocol) server providing complete access to the Google Blogger API v3, permanent Base64 media embedding, and lightweight summary listing modes.
 
+[![npm version](https://img.shields.io/npm/v/blogger-mcp-toolkit.svg?style=flat-square)](https://www.npmjs.com/package/blogger-mcp-toolkit)
 ![Node.js](https://img.shields.io/badge/Node.js-18+-success?logo=nodedotjs)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?logo=typescript)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
@@ -40,7 +41,7 @@ Interact seamlessly with Blogger blogs, posts, pages, comments, media, and user 
 
 ### Step 1: Acquire your Blogger Refresh Token (Remote or Local)
 
-Run the interactive authentication tool in your terminal:
+Run the interactive authentication tool directly in your terminal:
 
 ```bash
 npx blogger-mcp-auth
@@ -57,7 +58,7 @@ npx blogger-mcp-auth
 Install and configure automatically across all your AI assistants (**Claude Code**, **Cursor**, **Zed**, **Windsurf**, **VS Code**, etc.) in **one single command**:
 
 ```bash
-npx add-mcp github:RadouaneElarfaoui/blogger-mcp-toolkit \
+npx add-mcp blogger-mcp-toolkit \
   --env BLOGGER_CLIENT_ID=your-client-id.apps.googleusercontent.com \
   --env BLOGGER_CLIENT_SECRET=your-client-secret \
   --env BLOGGER_REFRESH_TOKEN=your-refresh-token
