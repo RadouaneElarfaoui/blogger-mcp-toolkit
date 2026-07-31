@@ -3,15 +3,11 @@ import { z } from "zod";
 
 dotenv.config();
 
-const rawConfigSchema = z.object({
-  BLOGGER_CLIENT_ID: z.string().optional(),
-  GOOGLE_CLIENT_ID: z.string().optional(),
-  BLOGGER_CLIENT_SECRET: z.string().optional(),
-  GOOGLE_CLIENT_SECRET: z.string().optional(),
-  BLOGGER_REFRESH_TOKEN: z.string().optional(),
-  GOOGLE_REFRESH_TOKEN: z.string().optional(),
+const configSchema = z.object({
+  BLOGGER_CLIENT_ID: z.string().min(1, "BLOGGER_CLIENT_ID is required"),
+  BLOGGER_CLIENT_SECRET: z.string().min(1, "BLOGGER_CLIENT_SECRET is required"),
+  BLOGGER_REFRESH_TOKEN: z.string().min(1, "BLOGGER_REFRESH_TOKEN is required"),
   BLOGGER_API_KEY: z.string().optional(),
-  GOOGLE_API_KEY: z.string().optional(),
 });
 
 export interface Config {
@@ -22,45 +18,31 @@ export interface Config {
 }
 
 export function loadConfig(): Config {
-  const result = rawConfigSchema.safeParse(process.env);
+  const result = configSchema.safeParse(process.env);
 
   if (!result.success) {
     const errors = result.error.errors.map((e) => e.message).join(", ");
-    throw new Error(`Configuration parsing error: ${errors}`);
-  }
-
-  const data = result.data;
-
-  const clientId = (data.BLOGGER_CLIENT_ID || data.GOOGLE_CLIENT_ID)?.trim();
-  const clientSecret = (data.BLOGGER_CLIENT_SECRET || data.GOOGLE_CLIENT_SECRET)?.trim();
-  const refreshToken = (data.BLOGGER_REFRESH_TOKEN || data.GOOGLE_REFRESH_TOKEN)?.trim();
-  const apiKey = (data.BLOGGER_API_KEY || data.GOOGLE_API_KEY)?.trim();
-
-  const missing: string[] = [];
-  if (!clientId) missing.push("BLOGGER_CLIENT_ID (or GOOGLE_CLIENT_ID)");
-  if (!clientSecret) missing.push("BLOGGER_CLIENT_SECRET (or GOOGLE_CLIENT_SECRET)");
-  if (!refreshToken) missing.push("BLOGGER_REFRESH_TOKEN (or GOOGLE_REFRESH_TOKEN)");
-
-  if (missing.length > 0) {
     throw new Error(
-      `Configuration error: Missing required environment variables: ${missing.join(", ")}. Run 'npx blogger-mcp-auth' to generate a refresh token.`
+      `Configuration error: ${errors}. Run 'npx blogger-mcp-auth' to generate your Blogger refresh token.`
     );
   }
 
-  if (!clientId!.endsWith(".apps.googleusercontent.com")) {
+  const env = result.data;
+
+  if (!env.BLOGGER_CLIENT_ID.endsWith(".apps.googleusercontent.com")) {
     console.error(
-      "[Blogger MCP] Warning: Client ID usually ends with '.apps.googleusercontent.com'."
+      "[Blogger MCP] Warning: BLOGGER_CLIENT_ID usually ends with '.apps.googleusercontent.com'."
     );
   }
 
-  if (refreshToken!.length < 15) {
-    console.error("[Blogger MCP] Warning: Refresh token seems unusually short.");
+  if (env.BLOGGER_REFRESH_TOKEN.length < 15) {
+    console.error("[Blogger MCP] Warning: BLOGGER_REFRESH_TOKEN seems unusually short.");
   }
 
   return {
-    clientId: clientId!,
-    clientSecret: clientSecret!,
-    refreshToken: refreshToken!,
-    apiKey,
+    clientId: env.BLOGGER_CLIENT_ID.trim(),
+    clientSecret: env.BLOGGER_CLIENT_SECRET.trim(),
+    refreshToken: env.BLOGGER_REFRESH_TOKEN.trim(),
+    apiKey: env.BLOGGER_API_KEY?.trim(),
   };
 }

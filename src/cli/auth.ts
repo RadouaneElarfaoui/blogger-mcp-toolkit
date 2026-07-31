@@ -43,14 +43,14 @@ async function getAvailablePort(startPort: number): Promise<number> {
 async function main() {
   console.log('\n🚀 Blogger MCP Toolkit - Interactive OAuth2 Token Generator\n');
 
-  let clientId = (process.env.BLOGGER_CLIENT_ID || process.env.GOOGLE_CLIENT_ID)?.trim();
-  let clientSecret = (process.env.BLOGGER_CLIENT_SECRET || process.env.GOOGLE_CLIENT_SECRET)?.trim();
+  let clientId = process.env.BLOGGER_CLIENT_ID?.trim();
+  let clientSecret = process.env.BLOGGER_CLIENT_SECRET?.trim();
 
   if (!clientId) {
-    clientId = await question('📝 Enter your Client ID (BLOGGER_CLIENT_ID): ');
+    clientId = await question('📝 Enter your BLOGGER_CLIENT_ID: ');
     clientId = clientId.trim();
   } else {
-    console.log('✅ Found Client ID in environment variables');
+    console.log('✅ Found BLOGGER_CLIENT_ID in environment variables');
   }
 
   if (clientId && !clientId.endsWith('.apps.googleusercontent.com')) {
@@ -58,14 +58,14 @@ async function main() {
   }
 
   if (!clientSecret) {
-    clientSecret = await question('📝 Enter your Client Secret (BLOGGER_CLIENT_SECRET): ');
+    clientSecret = await question('📝 Enter your BLOGGER_CLIENT_SECRET: ');
     clientSecret = clientSecret.trim();
   } else {
-    console.log('✅ Found Client Secret in environment variables');
+    console.log('✅ Found BLOGGER_CLIENT_SECRET in environment variables');
   }
 
   if (!clientId || !clientSecret) {
-    console.error('\n❌ Error: Client ID and Client Secret are required to proceed.');
+    console.error('\n❌ Error: BLOGGER_CLIENT_ID and BLOGGER_CLIENT_SECRET are required.');
     process.exit(1);
   }
 
@@ -109,7 +109,7 @@ async function main() {
         console.log('\n🎉 SUCCESS! Here is your Blogger Refresh Token:\n');
         console.log('\x1b[32m%s\x1b[0m', tokens.refresh_token);
         console.log('\n📌 COPY THIS COMMAND TO INSTALL VIA ADD-MCP:');
-        console.log('\x1b[36m%s\x1b[0m', `npx add-mcp github:RadouaneElarfaoui/blogger-mcp-toolkit --env BLOGGER_CLIENT_ID="${clientId}" --env BLOGGER_CLIENT_SECRET="${clientSecret}" --env BLOGGER_REFRESH_TOKEN="${tokens.refresh_token}"\n`);
+        console.log('\x1b[36m%s\x1b[0m', `npx add-mcp blogger-mcp-toolkit --env BLOGGER_CLIENT_ID="${clientId}" --env BLOGGER_CLIENT_SECRET="${clientSecret}" --env BLOGGER_REFRESH_TOKEN="${tokens.refresh_token}"\n`);
       } else {
         console.log('\n⚠️  No new refresh token returned. (Access might already be granted).');
         console.log('   Try revoking app access in your Google Account and re-running this script.');
@@ -123,7 +123,6 @@ async function main() {
     }
   };
 
-  // Interactive CLI prompt for remote/SSH copy-paste fallback
   rl.question('📋 Paste Authorization Code or full Callback URL here (or press Enter to wait for browser redirect): ', (manualInput) => {
     const input = manualInput.trim();
     if (input) {
