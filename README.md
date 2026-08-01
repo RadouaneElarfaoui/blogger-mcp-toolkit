@@ -43,9 +43,15 @@ Interact seamlessly with Blogger blogs, posts, pages, comments, media, and user 
 
 Run the interactive authentication tool directly in your terminal:
 
-```bash
-npx blogger-mcp-auth
-```
+* **Option A (Official GitHub Release — Recommended for Latest Version)**:
+  ```bash
+  npx github:RadouaneElarfaoui/blogger-mcp-toolkit blogger-mcp-auth
+  ```
+
+* **Option B (NPM Registry Release)**:
+  ```bash
+  npx blogger-mcp-auth
+  ```
 
 * **Interactive Prompt**: Enter your `BLOGGER_CLIENT_ID` and `BLOGGER_CLIENT_SECRET` when prompted.
 * **Browser Authentication**: Authorize the app in your browser. *(If working over SSH/remote container, simply copy-paste the redirected URL or authorization code back into the terminal!)*
@@ -57,12 +63,21 @@ npx blogger-mcp-auth
 
 Install and configure automatically across all your AI assistants (**Claude Code**, **Cursor**, **Zed**, **Windsurf**, **VS Code**, etc.) in **one single command**:
 
-```bash
-npx add-mcp blogger-mcp-toolkit \
-  --env BLOGGER_CLIENT_ID=your-client-id.apps.googleusercontent.com \
-  --env BLOGGER_CLIENT_SECRET=your-client-secret \
-  --env BLOGGER_REFRESH_TOKEN=your-refresh-token
-```
+* **Option A (Official GitHub Release — Recommended for Latest Version)**:
+  ```bash
+  npx add-mcp github:RadouaneElarfaoui/blogger-mcp-toolkit \
+    --env BLOGGER_CLIENT_ID=your-client-id.apps.googleusercontent.com \
+    --env BLOGGER_CLIENT_SECRET=your-client-secret \
+    --env BLOGGER_REFRESH_TOKEN=your-refresh-token
+  ```
+
+* **Option B (NPM Registry Release)**:
+  ```bash
+  npx add-mcp blogger-mcp-toolkit \
+    --env BLOGGER_CLIENT_ID=your-client-id.apps.googleusercontent.com \
+    --env BLOGGER_CLIENT_SECRET=your-client-secret \
+    --env BLOGGER_REFRESH_TOKEN=your-refresh-token
+  ```
 
 ---
 
